@@ -8,15 +8,18 @@
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; background: #fff; color: #000; font-family: 'VT323', monospace; font-size: 22px; line-height: 1.3; }
-  .wrap { display: flex; flex-wrap: wrap; max-width: 1100px; margin: 30px auto; border: 4px solid #000; }
+  .dil { position: fixed; top: 12px; right: 12px; z-index: 10; }
+  .dil button { font-family: inherit; font-size: 20px; background: #fff; color: #000; border: 3px solid #000; padding: 2px 10px; cursor: pointer; }
+  .dil button.aktif { background: #000; color: #fff; }
+  .wrap { display: flex; flex-wrap: wrap; max-width: 1100px; margin: 60px auto 30px; border: 4px solid #000; }
   .sol { width: 320px; padding: 24px; background: #000; color: #fff; }
   .foto { width: 200px; height: 260px; margin: 0 auto 16px; border: 4px solid #fff; overflow: hidden; }
-  .foto img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.1); transition: filter .4s; }
-  .foto img:hover { filter: none; }
+  .foto img { width: 100%; height: 100%; object-fit: cover; }
   .sol h1 { font-size: 34px; margin: 0; text-align: center; }
   .unvan { text-align: center; margin-bottom: 20px; }
   .sol h2 { border-bottom: 2px dashed #fff; font-size: 26px; }
-  .sol a { color: #fff; }
+  .sol a, .eposta-btn { color: #fff; text-decoration: underline; cursor: pointer; }
+  .eposta-adres { display: none; word-break: break-all; margin-top: 4px; }
   .terminal p { margin: 0 0 10px; }
   .komut::after { content: "_"; animation: yanip 1s steps(1) infinite; }
   @keyframes yanip { 50% { opacity: 0; } }
@@ -31,71 +34,142 @@
   .kart h3 { margin: 0 0 6px; font-size: 26px; }
   .kart a { color: #000; }
   footer { text-align: center; padding: 16px; }
-  @media (max-width: 700px) { .sol { width: 100%; } .wrap { margin: 0; } }
+  @media (max-width: 700px) { .sol { width: 100%; } .wrap { margin: 60px 0 0; } }
 </style>
 </head>
 <body>
+
+<div class="dil">
+  <button id="btn-tr" onclick="dilSec('tr')">TR</button>
+  <button id="btn-en" onclick="dilSec('en')">EN</button>
+</div>
+
 <div class="wrap">
 
   <aside class="sol">
     <div class="foto"><img src="foto.jpeg" alt="Melih Demir"></div>
     <h1>Melih Demir</h1>
-    <div class="unvan">Elektrik-Elektronik Mühendisi</div>
+    <div class="unvan" data-k="unvan"></div>
 
-    <h2>&gt; Hakkımda</h2>
+    <h2 data-k="hakkimda"></h2>
     <div class="terminal">
       <p class="komut">mel@ankara:~$ whoami</p>
-      <p>Gündüzleri yenidoğan cihazlarını test ediyorum: sıcaklık, nem, ışık. Bir bebeğin ilk saatlerinde güvendiği makinenin gerçekten güvenilir olmasını sağlamak işim.</p>
-      <p>Geceleri yüksek lisans yapıyorum: sinyaller, kanallar ve optimizasyon algoritmaları.</p>
-      <p>Bu sayfa benim mühendislik defterim. Denediklerimi, yanıldıklarımı ve öğrendiklerimi buraya yazıyorum.</p>
+      <p data-k="p1"></p>
+      <p data-k="p2"></p>
+      <p data-k="p3"></p>
     </div>
 
-    <h2>&gt; İletişim</h2>
+    <h2 data-k="iletisim"></h2>
     <p><a href="https://github.com/meLArchitect">GitHub</a></p>
-    <p><a href="mailto:melihdemiree.academic@gmail.com">E-posta</a></p>
+    <p>
+      <span class="eposta-btn" onclick="epostaAc()" data-k="eposta"></span>
+      <span class="eposta-adres" id="eposta">melihdemiree.academic@gmail.com</span>
+    </p>
   </aside>
 
   <main class="sag">
-    <h2>Araştırma Konuları</h2>
+    <h2 data-k="konular"></h2>
 
     <details>
-      <summary>Optimizasyon</summary>
-      <ul>
-        <li>Roket iniş kontrolü için PID ayarı: Genetik Algoritma ve PSO karşılaştırması (devam ediyor)</li>
-      </ul>
+      <summary data-k="opt"></summary>
+      <ul><li data-k="opt1"></li></ul>
     </details>
 
     <details>
-      <summary>Dijital Sinyal İşleme</summary>
-      <ul>
-        <li>Yüksek lisans ders projesi (devam ediyor)</li>
-      </ul>
+      <summary data-k="dsp"></summary>
+      <ul><li data-k="dsp1"></li></ul>
     </details>
 
     <details>
-      <summary>Kablosuz Haberleşme</summary>
-      <ul>
-        <li>Semantik haberleşme üzerine çalışma</li>
-        <li>Modülasyon, çok yollu kanal ve OFDM simülasyonları</li>
-      </ul>
+      <summary data-k="kab"></summary>
+      <ul><li data-k="kab1"></li><li data-k="kab2"></li></ul>
     </details>
 
     <details>
-      <summary>Tıbbi Cihaz Testleri</summary>
-      <ul>
-        <li>IEC 60601 uygunluk ve fonksiyonel testler</li>
-        <li>Çevresel testler: termal şok, titreşim, nem</li>
-      </ul>
+      <summary data-k="tib"></summary>
+      <ul><li data-k="tib1"></li><li data-k="tib2"></li></ul>
     </details>
 
-    <h2>Projeler</h2>
+    <h2 data-k="projeler"></h2>
     <div class="kart">
-      <h3>Yakında</h3>
-      <p>Projelerim ve kodları burada olacak. <a href="https://github.com/meLArchitect">GitHub'a göz at</a></p>
+      <h3 data-k="yakinda"></h3>
+      <p><span data-k="projeMetin"></span> <a href="https://github.com/meLArchitect" data-k="githubLink"></a></p>
     </div>
   </main>
 
 </div>
 <footer>© 2026 Melih Demir</footer>
+
+<script>
+const metin = {
+  tr: {
+    unvan: "Elektrik-Elektronik Mühendisi",
+    hakkimda: "> Hakkımda",
+    p1: "Gündüzleri yenidoğan cihazlarını test ediyorum: sıcaklık, nem, ışık ve elektriksel güvenlik. Standartlara uygun performans testleriyle bu cihazların gerçekten güvenilir olmasını sağlamak işim.",
+    p2: "Geceleri yüksek lisans yapıyorum: sinyaller, kanallar ve optimizasyon algoritmaları.",
+    p3: "Bu sayfa benim mühendislik defterim. Denediklerimi, yanıldıklarımı ve öğrendiklerimi buraya yazıyorum.",
+    iletisim: "> İletişim",
+    eposta: "E-posta",
+    konular: "Araştırma Konuları",
+    opt: "Optimizasyon",
+    opt1: "Roket iniş kontrolü için PID ayarı: Genetik Algoritma ve PSO karşılaştırması (devam ediyor)",
+    dsp: "Dijital Sinyal İşleme",
+    dsp1: "Yüksek lisans ders projesi (devam ediyor)",
+    kab: "Kablosuz Haberleşme",
+    kab1: "Semantik haberleşme üzerine çalışma",
+    kab2: "Modülasyon, çok yollu kanal ve OFDM simülasyonları",
+    tib: "Tıbbi Cihaz Testleri",
+    tib1: "IEC 60601 uygunluk ve fonksiyonel testler",
+    tib2: "Çevresel testler: termal şok, titreşim, nem",
+    projeler: "Projeler",
+    yakinda: "Yakında",
+    projeMetin: "Projelerim ve kodları burada olacak.",
+    githubLink: "GitHub'a göz at"
+  },
+  en: {
+    unvan: "Electrical & Electronics Engineer",
+    hakkimda: "> About Me",
+    p1: "By day, I test neonatal medical devices: temperature, humidity, light and electrical safety. My job is to make sure these devices are truly reliable through standards-compliant performance testing.",
+    p2: "By night, I'm a master's student: signals, channels and optimization algorithms.",
+    p3: "This page is my engineering notebook. I write down what I try, where I go wrong and what I learn.",
+    iletisim: "> Contact",
+    eposta: "Email",
+    konular: "Research Topics",
+    opt: "Optimization",
+    opt1: "PID tuning for rocket landing control: Genetic Algorithm vs. PSO comparison (in progress)",
+    dsp: "Digital Signal Processing",
+    dsp1: "Graduate course project (in progress)",
+    kab: "Wireless Communications",
+    kab1: "Study on semantic communication",
+    kab2: "Modulation, multipath channel and OFDM simulations",
+    tib: "Medical Device Testing",
+    tib1: "IEC 60601 compliance and functional testing",
+    tib2: "Environmental testing: thermal shock, vibration, humidity",
+    projeler: "Projects",
+    yakinda: "Coming Soon",
+    projeMetin: "My projects and their code will be here.",
+    githubLink: "Visit my GitHub"
+  }
+};
+
+function dilSec(dil) {
+  document.querySelectorAll("[data-k]").forEach(el => {
+    el.textContent = metin[dil][el.dataset.k];
+  });
+  document.documentElement.lang = dil;
+  document.getElementById("btn-tr").classList.toggle("aktif", dil === "tr");
+  document.getElementById("btn-en").classList.toggle("aktif", dil === "en");
+  try { localStorage.setItem("dil", dil); } catch (e) {}
+}
+
+function epostaAc() {
+  const e = document.getElementById("eposta");
+  e.style.display = e.style.display === "block" ? "none" : "block";
+}
+
+let kayitli = "tr";
+try { kayitli = localStorage.getItem("dil") || "tr"; } catch (e) {}
+dilSec(kayitli);
+</script>
 </body>
 </html>
